@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: test-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test-service
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+
+server:
+  port: 9090
+  servlet:
+    context-path: /test-service
+  ssl:
+    enabled: false
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    doc-expansion: none
+  writer-with-order-by-keys: true
+
+authentication:
+  jwt:
+    enabled: true
+    expiration: 7200000
+    secret: —---BEGIN RSA PRIVATE KEY---— MIIBOAIBAAJAYnnY02KFPyfQCHMfBSQD3XgyJabILCKOWs83repB3PI/Lk0oZ9Kjx0Gome743dwsEKzvB19cwRdiOyX20aBRvQIDAQABAkAuGAKZzz+3dBc4HUqjyVvVynEOlqaTogkoEF5rlX8Gv/Z6+gvFT6ZwvEXzH2RctC4z8M7wpmms96++H20uJH4xAiEAu+E0Nr1F37lVHwKOOSp0nSfScdHlqy0YLxQCC6g2pasCIQCGLkhBa0wkWxQa54xZUe1TW0rTdB7YGul/A1zW2louNwIgNmNvVhlczPM97Qg0W+AqegQ5K7HzpqYbRiWooe9EQpkCIAD8oidpBJxX1yQDg/K8OYSdbUV02y03tXPrsGkcHgGtAiA5dkX48/msr/vBsVW/xfnHWQe/4hoJ2WCnYYkh4WHkpQ== —---END RSA PRIVATE KEY-----
+
+user:
+  timezone-offset-seconds: 14400
+
