@@ -1,38 +1,28 @@
 ﻿@inherits LayoutComponentBase
+
 <div class="page">
     <main>
         <Layout>
-            <LayoutHeader Fixed>
+            <LayoutHeader>
                 <Bar Breakpoint="Breakpoint.Desktop"
+                     Mode="BarMode.Horizontal"
                      Background="Background.Light"
                      ThemeContrast="ThemeContrast.Light">
+                    <Button Clicked="ChangeSideBarVisibility"
+                            Outline="false">
+                        <Icon Name="GetIconForSideBarToggler()" />
+                    </Button>
                     <BarBrand>
-                        Brandname
+                        <BarItem>
+                            <BarLink To="/">
+                                Школа математики
+                            </BarLink>
+                        </BarItem>
                     </BarBrand>
-                    <BarToggler />
                     <BarMenu>
-                        <BarStart>
-                            <BarItem>
-                                <BarLink To="#home">Home</BarLink>
-                            </BarItem>
-                            <BarItem>
-                                <BarLink To="#docs">Documentation</BarLink>
-                            </BarItem>
-                            <BarItem>
-                                <BarDropdown>
-                                    <BarDropdownToggle>Dropdown</BarDropdownToggle>
-                                    <BarDropdownMenu>
-                                        <BarDropdownItem>Action</BarDropdownItem>
-                                        <BarDropdownDivider />
-                                        <BarDropdownItem>Another action</BarDropdownItem>
-                                    </BarDropdownMenu>
-                                </BarDropdown>
-                            </BarItem>
-                        </BarStart>
                         <BarEnd>
                             <BarItem>
-                                <Button Color="Color.Primary">Sign up</Button>
-                                <Button Color="Color.Secondary">Log in</Button>
+                                <Button Color="Color.Primary" Type="ButtonType.Link" To="/auth">Войти</Button>
                             </BarItem>
                         </BarEnd>
                     </BarMenu>
@@ -41,44 +31,19 @@
             <Layout Sider>
                 <LayoutSider>
                     <LayoutSiderContent>
-                        <Bar Mode="BarMode.VerticalInline"
-                             CollapseMode="BarCollapseMode.Small"
+                        <Bar @ref="_sideBar"
+                             Mode="BarMode.VerticalInline"
+                             Shadow="Shadow.Default"
+                             CollapseMode="BarCollapseMode.Hide"
                              Breakpoint="Breakpoint.Desktop"
                              NavigationBreakpoint="Breakpoint.Tablet"
-                             ThemeContrast="ThemeContrast.Dark">
-                             <BarToggler />
-                            <BarBrand>
-                                <BarItem>
-                                    <BarLink To="#">
-                                        <BarIcon IconName="IconName.Dashboard" />
-                                        Blazorise Demo
-                                    </BarLink>
-                                </BarItem>
-                            </BarBrand>
+                             ThemeContrast="ThemeContrast.Light"
+                             Visible="_isSideBarVisible">
                             <BarMenu>
-                                <BarStart>
-                                    <BarItem>
-                                        <BarLink To="#home">
-                                            <BarIcon IconName="IconName.Dashboard" />
-                                            Home
-                                        </BarLink>
-                                    </BarItem>
-                                    <BarItem>
-                                        <BarLink To="#docs">Documentation</BarLink>
-                                    </BarItem>
-                                    <BarItem>
-                                        <BarDropdown>
-                                            <BarDropdownToggle>
-                                                <BarIcon IconName="IconName.Edit" />
-                                                Dropdown
-                                            </BarDropdownToggle>
-                                            <BarDropdownMenu>
-                                                <BarDropdownItem>Action</BarDropdownItem>
-                                                <BarDropdownItem>Another action</BarDropdownItem>
-                                            </BarDropdownMenu>
-                                        </BarDropdown>
-                                    </BarItem>
-                                </BarStart>
+                                <BarItem>
+                                    <BarIcon IconName="IconName.UserCircle" />
+                                    Личный кабинет
+                                </BarItem>
                             </BarMenu>
                         </Bar>
                     </LayoutSiderContent>
@@ -92,3 +57,18 @@
         </Layout>
     </main>
 </div>
+
+@code {
+    private Bar _sideBar = new();
+    private bool _isSideBarVisible = true;
+
+    private void ChangeSideBarVisibility()
+    {
+        _isSideBarVisible = !_isSideBarVisible;
+    }
+
+    private IconName GetIconForSideBarToggler()
+    {
+        return _isSideBarVisible ? IconName.AngleLeft : IconName.Bars;
+    }
+}
