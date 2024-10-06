@@ -1,11 +1,14 @@
 ﻿@page "/auth"
 
-<Div Margin="Margin.IsAuto.OnX" Width="Width.Is50">
-    <Heading Size="HeadingSize.Is2" Margin="Margin.Is3.FromBottom" TextAlignment="TextAlignment.Center">
-        Войти
-    </Heading>
-
-    <Card Shadow="Shadow.Default">
+<Div Class="container-with-centered-content">
+    <Card Class="auth-form" Shadow="Shadow.Default" Margin="Margin.Is5.OnY">
+        <CardHeader>
+            <Div Flex="Flex.AlignContent.Center">
+                <Text>
+                    Войти
+                </Text>
+            </Div>
+        </CardHeader>
         <CardBody>
             <Form>
                 <Field>

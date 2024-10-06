@@ -4,10 +4,10 @@
     <main>
         <Layout>
             <LayoutHeader>
-                <Bar Breakpoint="Breakpoint.Desktop"
+                <Bar Class="app-header"
+                     Breakpoint="Breakpoint.Desktop"
                      Mode="BarMode.Horizontal"
-                     Background="Background.Light"
-                     ThemeContrast="ThemeContrast.Light">
+                     Background="Background.Primary">
                     <Button Clicked="ChangeSideBarVisibility"
                             Outline="false">
                         <Icon Name="GetIconForSideBarToggler()" />
@@ -31,20 +31,15 @@
             <Layout Sider>
                 <LayoutSider>
                     <LayoutSiderContent>
-                        <Bar @ref="_sideBar"
+                        <Bar Class="main-sidebar"
                              Mode="BarMode.VerticalInline"
                              Shadow="Shadow.Default"
-                             CollapseMode="BarCollapseMode.Hide"
-                             Breakpoint="Breakpoint.Desktop"
+                             Breakpoint="Breakpoint.None"
                              NavigationBreakpoint="Breakpoint.Tablet"
+                             Background="Background.Secondary"
                              ThemeContrast="ThemeContrast.Light"
                              Visible="_isSideBarVisible">
-                            <BarMenu>
-                                <BarItem>
-                                    <BarIcon IconName="IconName.UserCircle" />
-                                    Личный кабинет
-                                </BarItem>
-                            </BarMenu>
+                            <SiderContent />
                         </Bar>
                     </LayoutSiderContent>
                 </LayoutSider>
@@ -59,7 +54,6 @@
 </div>
 
 @code {
-    private Bar _sideBar = new();
     private bool _isSideBarVisible = true;
 
     private void ChangeSideBarVisibility()
@@ -70,5 +64,10 @@
     private IconName GetIconForSideBarToggler()
     {
         return _isSideBarVisible ? IconName.AngleLeft : IconName.Bars;
+    }
+
+    protected override void OnInitialized()
+    {
+        
     }
 }

@@ -1,0 +1,29 @@
+﻿<BarMenu>
+    <BarStart>
+        <BarItem TextAlignment="TextAlignment.Start">
+            <BarLink To="@_cabinetLink">
+                <BarIcon IconName="IconName.UserCircle" />
+                Личный кабинет
+            </BarLink>
+        </BarItem>
+        <BarItem TextAlignment="TextAlignment.Start">
+            <BarLink>
+                <BarIcon IconName="IconName.Book" />
+                Уроки
+            </BarLink>
+        </BarItem>
+    </BarStart>
+    <BarEnd>
+        <BarItem>
+            <BarLink To="@_developerTeamLink" TextAlignment="TextAlignment.Start">
+                <BarIcon IconName="IconName.Code" />
+                Техногении
+            </BarLink>
+        </BarItem>
+    </BarEnd>
+</BarMenu>
+
+@code {
+    private string _cabinetLink = "cabinet";
+    private string _developerTeamLink = "https://github.com/stacenko-developer/test-service";
+}

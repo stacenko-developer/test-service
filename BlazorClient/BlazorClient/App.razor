@@ -17,12 +17,40 @@
 @code {
     private Theme _theme = new()
     {
-        BarOptions = new()
+        BarOptions = new ThemeBarOptions
         {
-            LightColors = new()
+            LightColors = new ThemeBarColorOptions
             {
-                BackgroundColor = "#b1e1e9"
+                BackgroundColor = "#3498db",
+                Color = "#ecf0f1",
+                BrandColorOptions = new ThemeBarBrandColorOptions
+                {
+                    BackgroundColor = "#3498db",
+                },
+            },
+            DarkColors = new ThemeBarColorOptions
+            {
+                BackgroundColor = "#34495e",
+                Color = "#ecf0f1",
+                BrandColorOptions = new ThemeBarBrandColorOptions
+                {
+                    BackgroundColor = "#34495e",
+                },
             }
+        },
+        SidebarOptions = new ThemeSidebarOptions
+        {
+            BackgroundColor = "#2980b9",
+            Color = "#bdc3c7",
+        },
+        BackgroundOptions = new ThemeBackgroundOptions
+        {
+            Primary = "#2980b9",
+            Secondary = "#34495e",
+            Danger = "#ff7979",
+            Dark = "#30336b",
+            Light = "#30336b",
+            Success = "#badc58",
         },
     };
 }
