@@ -1,0 +1,73 @@
+﻿@using BlazorClient.Dto
+@using Blazored.LocalStorage
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject HttpClient HttpClient
+@inject AuthenticationStateProvider AuthStateProvider
+@inject ILocalStorageService LocalStorage
+@inject IConfiguration Configuration
+@inject NavigationManager NavigationManager
+@inject IModalService ModalService
+
+<ModalBody>
+        <Card Class="auth-form" Shadow="Shadow.Default" Margin="Margin.Is5.OnY">
+            <CardHeader>
+                <Div Flex="Flex.AlignContent.Center">
+                    <Text>
+                        Войти
+                    </Text>
+                </Div>
+            </CardHeader>
+            <CardBody>
+                <Form>
+                    <Field>
+                        <FieldLabel>
+                            Имя пользователя
+                        </FieldLabel>
+                        <FieldBody>
+                            <TextEdit Placeholder="Ваше имя пользователя"
+                                      @bind-Text="@_user.Login" />
+                        </FieldBody>
+                    </Field>
+                    <Field>
+                        <FieldLabel>
+                            Пароль
+                        </FieldLabel>
+                        <FieldBody>
+                            <TextEdit Placeholder="Ваш пароль"
+                                      Role="TextRole.Password"
+                                      autocomplete="new-password"
+                                      @bind-Text="@_user.Password" />
+                        </FieldBody>
+                    </Field>
+                    <Field>
+                        <Button Color="Color.Primary"
+                                Block
+                                Clicked="LoginHandle">
+                            Войти
+                        </Button>
+                    </Field>
+                </Form>
+            </CardBody>
+        </Card>
+</ModalBody>
+
+@code {
+    [Parameter]
+    public Action? OnAuth { get; set; }
+
+    private UserLoginDto _user = new();
+
+    private async Task LoginHandle()
+    {
+        var requestResult = await HttpClient.PostAsJsonAsync($"{Configuration["ApiServer:Url"]}/test-service/login", _user);
+        var token = await requestResult.Content.ReadAsStringAsync();
+
+        await LocalStorage.SetItemAsync("token", token);
+        await AuthStateProvider.GetAuthenticationStateAsync();
+        await ModalService.Hide();
+
+        if (OnAuth is not null)
+            OnAuth();   
+    }
+}

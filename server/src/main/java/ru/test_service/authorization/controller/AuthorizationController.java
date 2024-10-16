@@ -85,6 +85,7 @@ public class AuthorizationController {
         return new ResponseEntity<>(authorizationResponseDto, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @PostMapping("/logout")
     @Operation(
             summary = "Выйти из учетной записи",

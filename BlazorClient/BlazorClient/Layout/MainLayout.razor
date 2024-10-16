@@ -1,4 +1,15 @@
-﻿@inherits LayoutComponentBase
+﻿@using BlazorClient.Pages
+@using Blazored.LocalStorage
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inherits LayoutComponentBase
+
+@inject HttpClient HttpClient
+@inject AuthenticationStateProvider AuthStateProvider
+@inject ILocalStorageService LocalStorage
+@inject IConfiguration Configuration
+@inject NavigationManager NavigationManager
+@inject IModalService ModalService
 
 <div class="page">
     <main>
@@ -21,9 +32,18 @@
                     </BarBrand>
                     <BarMenu>
                         <BarEnd>
-                            <BarItem>
-                                <Button Color="Color.Primary" Type="ButtonType.Link" To="/login">Войти</Button>
-                            </BarItem>
+                            @if (_authenticated)
+                            {
+                                <BarItem>
+                                    <Button Color="Color.Primary" Clicked="LogoutHandle">Выйти</Button>
+                                </BarItem>
+                            }
+                            else
+                            {
+                                <BarItem>
+                                    <Button Color="Color.Primary" Clicked="ShowLoginModal" >Войти</Button>
+                                </BarItem>
+                            }
                         </BarEnd>
                     </BarMenu>
                 </Bar>
@@ -55,6 +75,7 @@
 
 @code {
     private bool _isSideBarVisible = true;
+    private bool _authenticated = false;
 
     private void ChangeSideBarVisibility()
     {
@@ -66,8 +87,37 @@
         return _isSideBarVisible ? IconName.AngleLeft : IconName.Bars;
     }
 
-    protected override void OnInitialized()
+    private void Auth()
     {
-        
+        _authenticated = true;
+        StateHasChanged();
+    }
+
+    private async Task LogoutHandle()
+    {
+        await LocalStorage.RemoveItemAsync("token");
+        _authenticated = false;
+        NavigationManager.NavigateTo("/");
+        await AuthStateProvider.GetAuthenticationStateAsync();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await LocalStorage.GetItemAsStringAsync("token");
+
+        if (!string.IsNullOrEmpty(token))
+            Auth();
+    }
+
+    public Task ShowLoginModal()
+    {
+        return ModalService.Show<LoginModal>(x =>
+        {
+            x.Add(x => x.OnAuth, Auth);
+        },
+        new ModalInstanceOptions()
+            {
+                UseModalStructure = false
+            });
     }
 }
