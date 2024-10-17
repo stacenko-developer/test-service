@@ -5,7 +5,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/test-service
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: postgres
+    password: 1
 
 server:
   port: 9090
