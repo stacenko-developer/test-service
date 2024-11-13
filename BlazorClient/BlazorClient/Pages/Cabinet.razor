@@ -1,0 +1,18 @@
+﻿@page "/cabinet"
+
+@using BlazorClient.Dto
+@using BlazorClient.Services
+
+@inject UserService UserService
+@inject IHttpClientFactory HttpClientFactory
+
+<h3>@_userId</h3>
+
+@code {
+    private Guid _userId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _userId = await UserService.GetCurrentUserIdFromJwtToken();
+    }
+}

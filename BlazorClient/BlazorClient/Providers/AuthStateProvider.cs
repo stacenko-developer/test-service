@@ -10,6 +10,7 @@ public class AuthStateProvider(
     ILocalStorageService localStorageService,
     HttpClient httpClient) : AuthenticationStateProvider
 {
+
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         var token = await localStorageService.GetItemAsStringAsync("token");
@@ -34,7 +35,6 @@ public class AuthStateProvider(
 
     public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
     {
-        Console.WriteLine(jwt);
         var payload = jwt.Split('.')[1];
         var jsonBytes = ParseBase64WithoutPadding(payload);
         var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
