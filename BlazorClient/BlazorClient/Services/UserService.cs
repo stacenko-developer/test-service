@@ -1,33 +1,74 @@
 ﻿using BlazorClient.Dto.LocalStorage;
+using BlazorClient.Dto.User;
 using Blazored.LocalStorage;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
 
 namespace BlazorClient.Services;
 
-public class UserService(ILocalStorageService localStorageService)
+public class UserService(
+    ILocalStorageService localStorageService,
+    IHttpClientFactory httpClientFactory,
+    IConfiguration configuration)
 {
+    private readonly string _apiServerUri = configuration["ApiServer:Url"] ?? throw new Exception("Not found ApiServer:Url section");
+
     public async Task<Guid> GetCurrentUserIdFromJwtToken()
     {
-        // Вынести в отдельный метод
-        var localStorageTokenDataString = await localStorageService.GetItemAsStringAsync("token") ??
-            throw new Exception("Token not found");
-        localStorageTokenDataString = localStorageTokenDataString.Replace(@"\u0022", "\"").Remove(0, 1);
-        localStorageTokenDataString = localStorageTokenDataString.Remove(localStorageTokenDataString.Length - 1, 1);
-        //
-
-        Console.WriteLine(localStorageTokenDataString);
-        var localStorageTokenData = JsonSerializer.Deserialize<LocalStorageTokenData>(localStorageTokenDataString);
-        Console.WriteLine(localStorageTokenData is null);
-        Console.WriteLine(localStorageTokenData.ErrCode);
-        Console.WriteLine(localStorageTokenData.Content.Token);
+        var localStorageTokenData = await GetTokenFromLocalStorage();
         var token = localStorageTokenData.Content.Token;
-
+        Console.WriteLine(token);
 
         var handler = new JwtSecurityTokenHandler();
-        var tokenData = handler.ReadJwtToken(token);
-        Console.WriteLine(tokenData.Payload.Count);
+        var jwtToken = handler.ReadJwtToken(token);
 
-        return Guid.NewGuid();
+        var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value ??
+            throw new Exception("Failed to get userId claim from jwtToken");
+
+        return Guid.Parse(userIdClaim);
+    }
+
+    public async Task<UserDto> GetUser(Guid userId)
+    {
+        var localStorageTokenData = await GetTokenFromLocalStorage();
+        var token = localStorageTokenData.Content.Token;
+
+        using var httpClient = httpClientFactory.CreateClient();
+        using var getUserRequest = new HttpRequestMessage(HttpMethod.Get, $"{configuration["ApiServer:Url"]}/test-service/user/{userId}");
+        getUserRequest.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        using var response = await httpClient.SendAsync(getUserRequest);
+
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var user = GetContentFromResponseString<UserDto>(responseContent);
+
+        return user;
+    }
+
+    private async Task<LocalStorageTokenData> GetTokenFromLocalStorage()
+    {
+        var localStorageTokenDataString = await localStorageService.GetItemAsStringAsync("token") ??
+            throw new Exception("Token not found");
+
+        localStorageTokenDataString = localStorageTokenDataString.Replace(@"\u0022", "\"").Remove(0, 1);
+        localStorageTokenDataString = localStorageTokenDataString.Remove(localStorageTokenDataString.Length - 1, 1);
+
+        var localStorageTokenData = JsonSerializer.Deserialize<LocalStorageTokenData>(localStorageTokenDataString) ??
+            throw new Exception("Failed to deserialize token");
+
+        return localStorageTokenData;
+    }
+
+    private ContentType GetContentFromResponseString<ContentType>(string responseString) where ContentType : class, new()
+    {
+        var responseObjectAsJson = JsonDocument.Parse(responseString) ??
+            throw new Exception("Failed to deserialize response into json");
+
+        var contentJsonStringRepresentation = responseObjectAsJson.RootElement.GetProperty("content").ToString();
+
+        var content = JsonSerializer.Deserialize<ContentType>(contentJsonStringRepresentation)
+            ?? throw new Exception($"Failed to deserialize content section of response into {nameof(ContentType)} object");
+
+        return content;
     }
 }

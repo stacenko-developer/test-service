@@ -1,7 +1,14 @@
-﻿namespace BlazorClient.Dto.User;
+﻿using BlazorClient.Dto.Role;
+using System.Text.Json.Serialization;
+
+namespace BlazorClient.Dto.User;
 
 public class UserDto
 {
-    public string Login { get; set; }
-
+    [JsonPropertyName("login")]
+    public string Login { get; set; } = string.Empty;
+    [JsonPropertyName("id")]
+    public Guid Id { get; set; }
+    [JsonPropertyName("roles")]
+    public List<RoleDto> Roles { get; set; } = [];
 }

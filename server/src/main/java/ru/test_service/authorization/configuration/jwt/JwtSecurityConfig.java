@@ -34,7 +34,6 @@ public class JwtSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(
@@ -42,6 +41,7 @@ public class JwtSecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-resources/**",
                                 "/login",
+                                "/user/**",
                                 "/error",
                                 "/404"
                         ).permitAll()
@@ -52,6 +52,7 @@ public class JwtSecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new JwtAuthFilter(userServiceBean, tokenValidationService, userTimeZoneProperties), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

@@ -10,7 +10,6 @@ public class AuthStateProvider(
     ILocalStorageService localStorageService,
     HttpClient httpClient) : AuthenticationStateProvider
 {
-
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         var token = await localStorageService.GetItemAsStringAsync("token");
