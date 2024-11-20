@@ -1,4 +1,4 @@
-﻿namespace BlazorClient.Dto;
+﻿namespace BlazorClient.Dto.User;
 
 public class UserLoginDto
 {

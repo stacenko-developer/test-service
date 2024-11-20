@@ -1,4 +1,4 @@
-﻿@using BlazorClient.Dto
+﻿@using BlazorClient.Dto.User
 @using Blazored.LocalStorage
 @using Microsoft.AspNetCore.Components.Authorization
 
@@ -64,6 +64,7 @@
         var token = await requestResult.Content.ReadAsStringAsync();
 
         await LocalStorage.SetItemAsync("token", token);
+        
         await AuthStateProvider.GetAuthenticationStateAsync();
         await ModalService.Hide();
 

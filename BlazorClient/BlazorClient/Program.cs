@@ -1,5 +1,6 @@
 using BlazorClient;
 using BlazorClient.Providers;
+using BlazorClient.Services;
 using Blazored.LocalStorage;
 using Blazorise;
 using Blazorise.Bootstrap5;
@@ -18,6 +19,8 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 
 // Services registration
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddHttpClient();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
 

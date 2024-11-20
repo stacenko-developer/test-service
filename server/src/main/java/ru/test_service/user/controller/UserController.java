@@ -18,6 +18,7 @@ import ru.test_service.user.dto.UserDto;
 import ru.test_service.user.dto.CreateUserDto;
 import java.util.UUID;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/user")
 @AllArgsConstructor
