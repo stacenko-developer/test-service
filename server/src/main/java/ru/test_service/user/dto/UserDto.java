@@ -22,6 +22,18 @@ public class UserDto implements Serializable {
     @Schema(description = "Логин пользователя", example = "viktor123")
     private String login;
 
+    @Schema(description = "Имя пользователя", example = "Иван")
+    private String firstName;
+
+    @Schema(description = "Фамилия пользователя", example = "Иванов")
+    private String lastName;
+
+    @Schema(description = "Отчество пользователя", example = "Иванович")
+    private String patronymic;
+
+    @Schema(description = "Почта пользователя", example = "viktor123@mail.ru")
+    private String email;
+
     @Schema(description = "Роли пользователя")
     private List<RoleDto> roles;
 }
