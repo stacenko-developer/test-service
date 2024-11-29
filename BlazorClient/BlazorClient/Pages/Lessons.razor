@@ -2,10 +2,48 @@
 
 @using Microsoft.AspNetCore.Authorization
 
-@attribute [Authorize]
 
-<h3>Тут будут уроки для авторизованного пользователя</h3>
+
+<Breadcrumb>
+    <BreadcrumbItem>
+        <BreadcrumbLink To="#">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        <BreadcrumbLink To="#">Library</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem Active>
+        <BreadcrumbLink To="#">Data</BreadcrumbLink>
+    </BreadcrumbItem>
+</Breadcrumb>
+
+<ListGroup Flush>
+    <ListGroupItem>
+        <Div Flex="Flex.JustifyContent.Between" Width="Width.Is100">
+            <Heading Size="HeadingSize.Is5" Margin="Margin.Is1.FromBottom">List group item heading</Heading>
+            <Small>3 days ago</Small>
+        </Div>
+        <Paragraph Margin="Margin.Is1.FromBottom">Some placeholder content in a paragraph.</Paragraph>
+        <Small>And some small print.</Small>
+    </ListGroupItem>
+    <ListGroupItem>
+        <Div Flex="Flex.JustifyContent.Between" Width="Width.Is100">
+            <Heading Size="HeadingSize.Is5" Margin="Margin.Is1.FromBottom">List group item heading</Heading>
+            <Small TextColor="TextColor.Muted">3 days ago</Small>
+        </Div>
+        <Paragraph Margin="Margin.Is1.FromBottom">Some placeholder content in a paragraph.</Paragraph>
+        <Small TextColor="TextColor.Muted">And some muted small print.</Small>
+    </ListGroupItem>
+    <ListGroupItem>
+        <Div Flex="Flex.JustifyContent.Between" Width="Width.Is100">
+            <Heading Size="HeadingSize.Is5" Margin="Margin.Is1.FromBottom">List group item heading</Heading>
+            <Small TextColor="TextColor.Muted">3 days ago</Small>
+        </Div>
+        <Paragraph Margin="Margin.Is1.FromBottom">Some placeholder content in a paragraph.</Paragraph>
+        <Small TextColor="TextColor.Muted">And some muted small print.</Small>
+    </ListGroupItem>
+</ListGroup>
 
 @code {
 
 }
+

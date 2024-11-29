@@ -1,0 +1,83 @@
+@page "/user"
+
+@using BlazorClient.Dto
+@using Blazored.LocalStorage
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
+@using BlazorClient.Dto.User
+@using BlazorClient.Services
+@using System.Text.Json
+
+@inject UserService UserService
+@inject HttpClient HttpClient
+@inject IConfiguration Configuration
+@inject HttpClient HttpClient
+@inject AuthenticationStateProvider AuthStateProvider
+@inject ILocalStorageService LocalStorage
+@inject IConfiguration Configuration
+@inject NavigationManager NavigationManager
+@inject IModalService ModalService
+
+
+
+<h1>Профиль пользователя</h1>
+
+<ListGroup>
+    <ListGroupItem>Имя: @_name</ListGroupItem>
+    <ListGroupItem>Фамилия: @_surname</ListGroupItem>
+    <ListGroupItem>Логин: @_currentUser.Login</ListGroupItem>
+    <ListGroupItem>Почта: @_email</ListGroupItem>
+</ListGroup>
+<Button Color="Color.Primary" Clicked="@ShowModal">Изменить почту</Button>
+
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Изменение почты</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>                                   
+                <FieldLabel>Новая почта</FieldLabel>
+                <TextEdit Placeholder="Enter email..." Role="TextRole.Email"
+                                      @bind-Text="@_newemail" />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Закрыть</Button>
+            <Button Color="Color.Primary" Clicked="@SaveModal">Сохранить</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+
+@code {
+    private UserDto _currentUser = new();
+   
+    string _email = "123@gmail.com";
+    private string _roleName = "superpuperAdmin";
+    private string _name = "Admin";
+    private string _surname = "Adminov";
+    private Modal modalRef;
+    string _newemail;
+
+    private Task ShowModal()
+    {
+        return modalRef.Show();
+    }
+    private Task HideModal()
+    {
+        return modalRef.Hide();
+    }
+    private Task SaveModal()
+    {
+        _email = _newemail;
+        return modalRef.Hide();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        var currentUserId = await UserService.GetCurrentUserIdFromJwtToken();
+        _currentUser = await UserService.GetUser(currentUserId);
+    }
+}
