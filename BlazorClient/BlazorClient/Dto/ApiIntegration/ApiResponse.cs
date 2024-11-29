@@ -9,6 +9,7 @@ public class ApiResponse
 {
     [JsonPropertyName("errCode")]
     public string ErrCode { get; set; } = string.Empty;
+
     [JsonPropertyName("content")]
     public string Content { get; set; } = string.Empty;
 }

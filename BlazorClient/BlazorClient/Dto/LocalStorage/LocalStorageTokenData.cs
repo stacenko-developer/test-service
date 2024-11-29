@@ -10,6 +10,7 @@ public class LocalStorageTokenData
 {
     [JsonPropertyName("errCode")]
     public string ErrCode { get; set; } = string.Empty;
+
     [JsonPropertyName("content")]
     public Content Content { get; set; } = new();
 }

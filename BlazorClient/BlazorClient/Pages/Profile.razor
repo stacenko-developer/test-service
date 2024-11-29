@@ -21,12 +21,53 @@
 @attribute [Authorize]
 
 <ListGroup>
-    <ListGroupItem>Имя: @_currentUser.FirstName</ListGroupItem>
-    <ListGroupItem>Фамилия: @_currentUser.LastName</ListGroupItem>
-    <ListGroupItem>Логин: @_currentUser.Login</ListGroupItem>
-    <ListGroupItem>Почта: @_currentUser.Email</ListGroupItem>
+    <ListGroupItem>
+        <Field>
+            <FieldLabel>
+                Имя
+            </FieldLabel>
+            <FieldBody>
+                @_currentUser.FirstName
+            </FieldBody>
+        </Field>
+    </ListGroupItem>
+    <ListGroupItem>
+        <Field>
+            <FieldLabel>
+                Фамилия
+            </FieldLabel>
+            <FieldBody>
+                @_currentUser.LastName
+            </FieldBody>
+        </Field>
+    </ListGroupItem>
+    <ListGroupItem>
+        <Field>
+            <FieldLabel>
+                Логин
+            </FieldLabel>
+            <FieldBody>
+                @_currentUser.Login
+            </FieldBody>
+        </Field>
+    </ListGroupItem>
+    <ListGroupItem>
+        <Field>
+            <FieldLabel>
+                Почта
+            </FieldLabel>
+            <FieldBody>
+                <Text>
+                    @_currentUser.Email
+                </Text>
+                <Button Color="Color.Info" Clicked="@ShowModal">
+                    <Icon Name="IconName.Edit">
+                    </Icon>
+                </Button>
+            </FieldBody>
+        </Field>
+    </ListGroupItem>
 </ListGroup>
-<Button Color="Color.Primary" Clicked="@ShowModal">Изменить почту</Button>
 
 <Modal @ref="modalRef">
     <ModalContent Centered>
