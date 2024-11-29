@@ -4,7 +4,6 @@
 @using Blazored.LocalStorage
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
-
 @using BlazorClient.Dto.User
 @using BlazorClient.Services
 @using System.Text.Json
@@ -19,15 +18,13 @@
 @inject NavigationManager NavigationManager
 @inject IModalService ModalService
 
-
-
-<h1>Профиль пользователя</h1>
+@attribute [Authorize]
 
 <ListGroup>
-    <ListGroupItem>Имя: @_name</ListGroupItem>
-    <ListGroupItem>Фамилия: @_surname</ListGroupItem>
+    <ListGroupItem>Имя: @_currentUser.FirstName</ListGroupItem>
+    <ListGroupItem>Фамилия: @_currentUser.LastName</ListGroupItem>
     <ListGroupItem>Логин: @_currentUser.Login</ListGroupItem>
-    <ListGroupItem>Почта: @_email</ListGroupItem>
+    <ListGroupItem>Почта: @_currentUser.Email</ListGroupItem>
 </ListGroup>
 <Button Color="Color.Primary" Clicked="@ShowModal">Изменить почту</Button>
 
@@ -41,7 +38,7 @@
             <Field>                                   
                 <FieldLabel>Новая почта</FieldLabel>
                 <TextEdit Placeholder="Enter email..." Role="TextRole.Email"
-                                      @bind-Text="@_newemail" />
+                                      @bind-Text="@_newEmail" />
             </Field>
         </ModalBody>
         <ModalFooter>
@@ -54,27 +51,25 @@
 
 @code {
     private UserDto _currentUser = new();
-   
-    string _email = "123@gmail.com";
-    private string _roleName = "superpuperAdmin";
-    private string _name = "Admin";
-    private string _surname = "Adminov";
-    private Modal modalRef;
-    string _newemail;
+    private Modal modalRef = new();
+    private string _newEmail = string.Empty;
 
     private Task ShowModal()
     {
         return modalRef.Show();
     }
+
     private Task HideModal()
     {
         return modalRef.Hide();
     }
+
     private Task SaveModal()
     {
-        _email = _newemail;
+        _currentUser.Email = _newEmail;
         return modalRef.Hide();
     }
+
     protected override async Task OnInitializedAsync()
     {
         var currentUserId = await UserService.GetCurrentUserIdFromJwtToken();

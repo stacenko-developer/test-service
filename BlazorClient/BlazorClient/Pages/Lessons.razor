@@ -1,49 +1,46 @@
 ﻿@page "/lessons"
 
+@attribute [Authorize]
+
+@using BlazorClient.Dto.Lessons
 @using Microsoft.AspNetCore.Authorization
 
-
-
-<Breadcrumb>
-    <BreadcrumbItem>
-        <BreadcrumbLink To="#">Home</BreadcrumbLink>
-    </BreadcrumbItem>
-    <BreadcrumbItem>
-        <BreadcrumbLink To="#">Library</BreadcrumbLink>
-    </BreadcrumbItem>
-    <BreadcrumbItem Active>
-        <BreadcrumbLink To="#">Data</BreadcrumbLink>
-    </BreadcrumbItem>
-</Breadcrumb>
-
-<ListGroup Flush>
-    <ListGroupItem>
-        <Div Flex="Flex.JustifyContent.Between" Width="Width.Is100">
-            <Heading Size="HeadingSize.Is5" Margin="Margin.Is1.FromBottom">List group item heading</Heading>
-            <Small>3 days ago</Small>
-        </Div>
-        <Paragraph Margin="Margin.Is1.FromBottom">Some placeholder content in a paragraph.</Paragraph>
-        <Small>And some small print.</Small>
-    </ListGroupItem>
-    <ListGroupItem>
-        <Div Flex="Flex.JustifyContent.Between" Width="Width.Is100">
-            <Heading Size="HeadingSize.Is5" Margin="Margin.Is1.FromBottom">List group item heading</Heading>
-            <Small TextColor="TextColor.Muted">3 days ago</Small>
-        </Div>
-        <Paragraph Margin="Margin.Is1.FromBottom">Some placeholder content in a paragraph.</Paragraph>
-        <Small TextColor="TextColor.Muted">And some muted small print.</Small>
-    </ListGroupItem>
-    <ListGroupItem>
-        <Div Flex="Flex.JustifyContent.Between" Width="Width.Is100">
-            <Heading Size="HeadingSize.Is5" Margin="Margin.Is1.FromBottom">List group item heading</Heading>
-            <Small TextColor="TextColor.Muted">3 days ago</Small>
-        </Div>
-        <Paragraph Margin="Margin.Is1.FromBottom">Some placeholder content in a paragraph.</Paragraph>
-        <Small TextColor="TextColor.Muted">And some muted small print.</Small>
-    </ListGroupItem>
+<ListGroup Mode="ListGroupMode.Selectable"
+           Flush>
+    @foreach (var lesson in _lessons)
+    {
+        <ListGroupItem Name="@(lesson.Id.ToString())">
+            <Div Flex="Flex.JustifyContent.Between" Width="Width.Is100">
+                <Heading Size="HeadingSize.Is5" Margin="Margin.Is1.FromBottom">@lesson.Name</Heading>
+            </Div>
+            <Paragraph Margin="Margin.Is1.FromBottom">@lesson.Description</Paragraph>
+            <Small>Не пройдено</Small>
+        </ListGroupItem>
+    }
 </ListGroup>
 
 @code {
+    private string _selectedLessonId = Guid.Empty.ToString();
 
+    private List<LessonDto> _lessons = [
+        new() 
+        {
+            Id = Guid.Empty,
+            Name = "Сложение",
+            Description = "Складываем простые числа :)"
+        },
+        new()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Умножение",
+            Description = "Преумножаем наш капитал"
+        },
+        new() 
+        {
+            Id = Guid.NewGuid(),
+            Name = "Интегральное исчисление",
+            Description = "Я и сам не знаю, что это такое"
+        }
+        ];
 }
 

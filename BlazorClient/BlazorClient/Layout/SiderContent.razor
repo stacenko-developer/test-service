@@ -12,6 +12,12 @@
                 Уроки
             </BarLink>
         </BarItem>
+        <BarItem TextAlignment="TextAlignment.Start">
+            <BarLink To="users">
+                <BarIcon IconName="IconName.Users" />
+                Пользователи
+            </BarLink>
+        </BarItem>
     </BarStart>
     <BarEnd>
         <BarItem>
@@ -24,6 +30,6 @@
 </BarMenu>
 
 @code {
-    private string _cabinetLink = "cabinet";
+    private string _cabinetLink = "user";
     private string _developerTeamLink = "https://github.com/stacenko-developer/test-service";
 }
