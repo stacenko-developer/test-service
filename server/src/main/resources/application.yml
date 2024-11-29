@@ -5,7 +5,23 @@ spring:
     url: jdbc:postgresql://localhost:5432/test-service
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: 1
+    password: postgres
+  mail:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enabled: false
+          ssl:
+            enable: true
+            protocols: TLSv1.2
+            trust: smtp.mail.ru
+    host: smtp.mail.ru
+    port: 465
+    protocol: smtp
+    username: amr_stacenko@mail.ru
+    password: YLKXef8B2NzUTfLG9rpP
 
 server:
   port: 9090
@@ -26,6 +42,11 @@ authentication:
     enabled: true
     expiration: 7200000
     secret: —---BEGIN RSA PRIVATE KEY---— MIIBOAIBAAJAYnnY02KFPyfQCHMfBSQD3XgyJabILCKOWs83repB3PI/Lk0oZ9Kjx0Gome743dwsEKzvB19cwRdiOyX20aBRvQIDAQABAkAuGAKZzz+3dBc4HUqjyVvVynEOlqaTogkoEF5rlX8Gv/Z6+gvFT6ZwvEXzH2RctC4z8M7wpmms96++H20uJH4xAiEAu+E0Nr1F37lVHwKOOSp0nSfScdHlqy0YLxQCC6g2pasCIQCGLkhBa0wkWxQa54xZUe1TW0rTdB7YGul/A1zW2louNwIgNmNvVhlczPM97Qg0W+AqegQ5K7HzpqYbRiWooe9EQpkCIAD8oidpBJxX1yQDg/K8OYSdbUV02y03tXPrsGkcHgGtAiA5dkX48/msr/vBsVW/xfnHWQe/4hoJ2WCnYYkh4WHkpQ== —---END RSA PRIVATE KEY-----
+
+restore-user:
+  restore-user-username: amr_stacenko@mail.ru
+  restore-user-subject: Восстановление учетной записи
+  restore-user-body: Ваш запрос на восстановление доступа обработан. Новый пароль - %s
 
 user:
   timezone-offset-seconds: 14400

@@ -25,6 +25,18 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(nullable = false)
+    private String patronymic;
+
+    @Column(nullable = false)
+    private String email;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "tr_user_role", schema = "users",

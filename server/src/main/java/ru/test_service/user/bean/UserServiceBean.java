@@ -7,13 +7,19 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.test_service.mail.configuration.MailConfiguration;
+import ru.test_service.mail.dto.EmailDto;
+import ru.test_service.mail.service.EmailService;
+import ru.test_service.user.configuration.RestoreUserConfiguration;
 import ru.test_service.user.dao.entity.Role;
 import ru.test_service.user.dao.entity.User;
 import ru.test_service.user.dao.service.RoleServiceDao;
 import ru.test_service.user.dao.service.UserServiceDao;
 import ru.test_service.user.dto.CreateUserDto;
+import ru.test_service.user.dto.RestoreUserDto;
 import ru.test_service.user.dto.SecuredUserDto;
 import ru.test_service.user.dto.UserDto;
+import ru.test_service.user.exception.EmailNotSpecifiedException;
 import ru.test_service.user.exception.UserLoginHasAlreadyExistException;
 import ru.test_service.user.exception.UserLoginNotSpecifiedException;
 import ru.test_service.user.exception.UserPasswordNotSpecifiedException;
@@ -26,7 +32,31 @@ public class UserServiceBean {
 
     private final UserServiceDao userServiceDao;
     private final RoleServiceDao roleServiceDao;
+    private final PasswordServiceBean passwordServiceBean;
+    private final EmailService emailService;
     private final ModelMapper mapper;
+    private final RestoreUserConfiguration restoreUserConfiguration;
+
+    @Transactional
+    public void restoreUser(RestoreUserDto restoreUserDto) {
+        if (StringUtils.isBlank(restoreUserDto.getEmail())) {
+            throw new EmailNotSpecifiedException();
+        }
+
+        User user = userServiceDao.findByEmail(restoreUserDto.getEmail());
+        String newPassword = passwordServiceBean.getRandomPassword();
+
+        EmailDto emailDto = new EmailDto();
+        emailDto.setEmailSender(restoreUserConfiguration.getRestoreUserUsername());
+        emailDto.setSubject(restoreUserConfiguration.getRestoreUserSubject());
+        emailDto.setRecipient(restoreUserDto.getEmail());
+        emailDto.setBody(String.format(restoreUserConfiguration.getRestoreUserBody(),
+                newPassword));
+
+        emailService.sendEmail(emailDto);
+
+        updateUser(mapper.map(user, SecuredUserDto.class));
+    }
 
     @Transactional
     public UserDto findByLogin(String login) {
@@ -84,10 +114,6 @@ public class UserServiceBean {
     @Transactional
     public UserDto updateUser(SecuredUserDto user) {
         User entity = userServiceDao.findById(user.getId());
-
-            int f = 4;
-
-
 
         if (StringUtils.isNotBlank(user.getPassword())) {
             PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();

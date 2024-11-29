@@ -43,11 +43,11 @@ public class JwtSecurityConfig {
                                 "/login",
                                 "/user/**",
                                 "/error",
+                                "/restore-user/**",
                                 "/404"
                         ).permitAll()
                         .anyRequest().hasAuthority("ADMINISTRATOR")
                 )
-                .anonymous(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
