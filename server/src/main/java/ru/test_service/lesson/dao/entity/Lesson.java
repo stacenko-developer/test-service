@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Comment;
 import ru.test_service.common.dao.BaseEntity;
+
 import java.io.Serial;
 
 @Getter

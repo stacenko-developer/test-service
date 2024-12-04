@@ -7,7 +7,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.test_service.mail.configuration.MailConfiguration;
 import ru.test_service.mail.dto.EmailDto;
 import ru.test_service.mail.service.EmailService;
 import ru.test_service.user.configuration.RestoreUserConfiguration;
@@ -23,6 +22,7 @@ import ru.test_service.user.exception.EmailNotSpecifiedException;
 import ru.test_service.user.exception.UserLoginHasAlreadyExistException;
 import ru.test_service.user.exception.UserLoginNotSpecifiedException;
 import ru.test_service.user.exception.UserPasswordNotSpecifiedException;
+
 import java.util.List;
 import java.util.UUID;
 

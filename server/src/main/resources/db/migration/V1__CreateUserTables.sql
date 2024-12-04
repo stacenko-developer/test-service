@@ -1,3 +1,5 @@
+create schema if not exists "users";
+
 create table users.tr_user (
     id uuid default gen_random_uuid() constraint tr_user_pk primary key,
     login text not null,
@@ -12,8 +14,12 @@ create table users.tr_role (
 
 create table users.tr_user_role (
     user_id uuid constraint tr_user_fk references users.tr_user,
-    role_id uuid constraint tr_role_fk references users.tr_role
+    role_id uuid constraint tr_role_fk references users.tr_role,
+    primary key (user_id, role_id)
 );
+
+create index tr_user_role_user_idx on users.tr_user_role(user_id);
+create index tr_user_role_role_idx on users.tr_user_role(role_id);
 
 comment on table users.tr_user is 'Пользователи';
 comment on column users.tr_user.id is 'Идентификатор пользователя';

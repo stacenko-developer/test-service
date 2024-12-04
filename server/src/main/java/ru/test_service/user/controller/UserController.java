@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.test_service.user.bean.UserServiceBean;
 import ru.test_service.user.dto.CreateUserDto;
-import ru.test_service.user.dto.RestoreUserDto;
 import ru.test_service.user.dto.SecuredUserDto;
 import ru.test_service.user.dto.UserDto;
 

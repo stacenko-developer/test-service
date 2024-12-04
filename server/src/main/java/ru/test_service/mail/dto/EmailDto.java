@@ -2,6 +2,7 @@ package ru.test_service.mail.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import java.io.Serial;
 import java.io.Serializable;
 

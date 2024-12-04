@@ -2,6 +2,7 @@ package ru.test_service.authorization.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
 import java.util.UUID;
 
 @RequiredArgsConstructor

@@ -3,6 +3,7 @@ package ru.test_service.common.exception;
 import lombok.Getter;
 import lombok.Setter;
 import ru.test_service.common.ResponseDto;
+
 import java.io.Serial;
 
 @Getter

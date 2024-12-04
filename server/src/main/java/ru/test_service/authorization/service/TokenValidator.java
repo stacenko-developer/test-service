@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import ru.test_service.authorization.configuration.jwt.JwtConfigurationProperties;
 import ru.test_service.authorization.dto.TokenValidationResponse;
+
 import javax.crypto.spec.SecretKeySpec;
 import java.util.UUID;
 

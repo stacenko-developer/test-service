@@ -1,5 +1,6 @@
 package ru.test_service.authorization.controller;
 
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,7 +25,7 @@ import ru.test_service.authorization.dto.AuthorizationRequestDto;
 import ru.test_service.authorization.dto.AuthorizationResponseDto;
 import ru.test_service.user.bean.UserServiceBean;
 import ru.test_service.user.dto.SecuredUserDto;
-import io.jsonwebtoken.Jwts;
+
 import java.time.Instant;
 import java.util.Date;
 

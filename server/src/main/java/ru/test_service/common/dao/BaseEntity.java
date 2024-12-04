@@ -7,6 +7,7 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;

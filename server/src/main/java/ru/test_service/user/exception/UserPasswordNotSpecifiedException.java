@@ -1,6 +1,7 @@
 package ru.test_service.user.exception;
 
 import ru.test_service.common.exception.AbstractException;
+
 import java.io.Serial;
 
 public class UserPasswordNotSpecifiedException extends AbstractException {

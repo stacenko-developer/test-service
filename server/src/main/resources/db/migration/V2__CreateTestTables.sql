@@ -1,3 +1,5 @@
+create schema if not exists "test";
+
 create table test.tr_lesson (
     id uuid default gen_random_uuid() constraint tr_lesson_pk primary key,
     name text not null
@@ -11,12 +13,16 @@ create table test.tr_test(
         references test.tr_lesson (id)
 );
 
+create index tr_test_lesson_idx on test.tr_test(lesson_id);
+
 create table test.tr_question (
     id uuid default gen_random_uuid() constraint tr_question_pk primary key,
     name text not null,
     test_id uuid constraint tr_question_tr_test_fk
         references test.tr_test (id)
 );
+
+create index tr_question_test_idx on test.tr_question(test_id);
 
 create table test.tr_answer (
     id uuid default gen_random_uuid() constraint tr_answer_pk primary key,
@@ -26,10 +32,16 @@ create table test.tr_answer (
         references test.tr_question (id)
 );
 
+create index tr_answer_question_idx on test.tr_answer(question_id);
+
 create table test.tr_user_test (
     user_id uuid constraint tr_user_fk references users.tr_user,
-    test_id uuid constraint tr_test_fk references test.tr_test
+    test_id uuid constraint tr_test_fk references test.tr_test,
+    primary key (user_id, test_id)
 );
+
+create index tr_user_test_user_idx on test.tr_user_test(user_id);
+create index tr_user_test_test_idx on test.tr_user_test(test_id);
 
 comment on table test.tr_lesson is 'Уроки';
 comment on column test.tr_lesson.id is 'Идентификатор урока';

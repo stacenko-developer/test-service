@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import ru.test_service.common.exception.NotFoundException;
+
 import java.util.UUID;
 
 public abstract class AbstractServiceDao<E extends BaseEntity, T extends AbstractRepository<E>> {
