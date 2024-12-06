@@ -1,0 +1,126 @@
+@page "/user"
+
+@using BlazorClient.Dto
+@using Blazored.LocalStorage
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using BlazorClient.Dto.User
+@using BlazorClient.Services
+@using System.Text.Json
+
+@inject UserService UserService
+@inject HttpClient HttpClient
+@inject IConfiguration Configuration
+@inject HttpClient HttpClient
+@inject AuthenticationStateProvider AuthStateProvider
+@inject ILocalStorageService LocalStorage
+@inject IConfiguration Configuration
+@inject NavigationManager NavigationManager
+@inject IModalService ModalService
+
+@attribute [Authorize]
+
+<ListGroup>
+    <ListGroupItem>
+        <Field>
+            <FieldLabel>
+                Имя
+            </FieldLabel>
+            <FieldBody>
+                @_currentUser.FirstName
+            </FieldBody>
+        </Field>
+    </ListGroupItem>
+    <ListGroupItem>
+        <Field>
+            <FieldLabel>
+                Фамилия
+            </FieldLabel>
+            <FieldBody>
+                @_currentUser.LastName
+            </FieldBody>
+        </Field>
+    </ListGroupItem>
+    <ListGroupItem>
+        <Field>
+            <FieldLabel>
+                Логин
+            </FieldLabel>
+            <FieldBody>
+                @_currentUser.Login
+            </FieldBody>
+        </Field>
+    </ListGroupItem>
+    <ListGroupItem>
+        <Field>
+            <FieldLabel>
+                Почта
+            </FieldLabel>
+            <FieldBody>
+                <Text>
+                    @_currentUser.Email
+                </Text>
+                <Button Color="Color.Info" Clicked="@ShowModal">
+                    <Icon Name="IconName.Edit">
+                    </Icon>
+                </Button>
+            </FieldBody>
+        </Field>
+    </ListGroupItem>
+</ListGroup>
+
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Изменение почты</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>                                   
+                <FieldLabel>Новая почта</FieldLabel>
+                <TextEdit Placeholder="Enter email..." Role="TextRole.Email"
+                                      @bind-Text="@_newEmail" />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Закрыть</Button>
+            <Button Color="Color.Primary" Clicked="@SaveModal">Сохранить</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+
+@code {
+    private UserDto _currentUser = new();
+    private Modal modalRef = new();
+    private string _newEmail = string.Empty;
+
+    private Task ShowModal()
+    {
+        return modalRef.Show();
+    }
+
+    private Task HideModal()
+    {
+        return modalRef.Hide();
+    }
+
+    private async Task SaveModal()
+    {
+        _currentUser.Email = _newEmail;
+        await modalRef.Hide();
+        await UpdateUser();
+    }
+
+    private async Task UpdateUser()
+    {
+        await UserService.UpdateUser(_currentUser);
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var currentUserId = await UserService.GetCurrentUserIdFromJwtToken();
+        _currentUser = await UserService.GetUser(currentUserId);
+    }
+}

@@ -2,6 +2,8 @@
 using BlazorClient.Dto.User;
 using Blazored.LocalStorage;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace BlazorClient.Services;
@@ -43,6 +45,23 @@ public class UserService(
         var user = GetContentFromResponseString<UserDto>(responseContent);
 
         return user;
+    }
+
+    public async Task<HttpStatusCode> UpdateUser(UserDto userToUpdate)
+    {
+        var localStorageTokenData = await GetTokenFromLocalStorage();
+        var token = localStorageTokenData.Content.Token;
+
+        using var httpClient = httpClientFactory.CreateClient();
+
+        var userToUpdateJsonContent = JsonContent.Create(userToUpdate);
+        using var putUserRequest = new HttpRequestMessage(HttpMethod.Put, $"{configuration["ApiServer:Url"]}/test-service/user");
+        putUserRequest.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        putUserRequest.Content = userToUpdateJsonContent;
+
+        using var response = await httpClient.SendAsync(putUserRequest);
+
+        return response.StatusCode;
     }
 
     private async Task<LocalStorageTokenData> GetTokenFromLocalStorage()

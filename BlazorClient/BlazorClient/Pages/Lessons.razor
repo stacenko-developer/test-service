@@ -1,11 +1,64 @@
 ﻿@page "/lessons"
 
-@using Microsoft.AspNetCore.Authorization
-
 @attribute [Authorize]
 
-<h3>Тут будут уроки для авторизованного пользователя</h3>
+@using BlazorClient.Dto.Lessons
+@using Microsoft.AspNetCore.Authorization
+
+<ListGroup Mode="ListGroupMode.Selectable"
+           Flush>
+    @foreach (var lesson in _lessons)
+    {
+        <ListGroupItem Name="@(lesson.Id.ToString())">
+            <Div Flex="Flex.JustifyContent.Between" Width="Width.Is100">
+                <Heading Size="HeadingSize.Is5" Margin="Margin.Is1.FromBottom">@lesson.Name</Heading>
+            </Div>
+            <Paragraph Margin="Margin.Is1.FromBottom">@lesson.Description</Paragraph>
+            <Small>Не пройдено</Small>
+        </ListGroupItem>
+    }
+</ListGroup>
 
 @code {
+    private string _selectedLessonId = Guid.Empty.ToString();
 
+    private List<LessonDto> _lessons = [
+        new() 
+        {
+            Id = Guid.Empty,
+            Name = "Сложение",
+            Description = "Складываем простые числа :)"
+        },
+        new()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Умножение",
+            Description = "Преумножаем наш капитал"
+        },
+        new() 
+        {
+            Id = Guid.NewGuid(),
+            Name = "Интегральное исчисление",
+            Description = "Я и сам не знаю, что это такое"
+        },
+        new()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Учим цифры",
+            Description = "Это самое интересное в математике"
+        },
+        new()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Вычитание",
+            Description = "Мычитание"
+        },
+        new()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Дискриминант",
+            Description = "Дэ равно бэ квадрат минус четыре а ц"
+        },
+    ];
 }
+

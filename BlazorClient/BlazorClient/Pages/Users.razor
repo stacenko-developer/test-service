@@ -1,0 +1,48 @@
+@page "/users"
+
+@using BlazorClient.Dto
+@using Blazored.LocalStorage
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
+@using BlazorClient.Dto.User
+@using BlazorClient.Services
+@using System.Text.Json
+
+@inject UserService UserService
+@inject HttpClient HttpClient
+@inject IConfiguration Configuration
+@inject HttpClient HttpClient
+@inject AuthenticationStateProvider AuthStateProvider
+@inject ILocalStorageService LocalStorage
+@inject IConfiguration Configuration
+@inject NavigationManager NavigationManager
+@inject IModalService ModalService
+
+@attribute [Authorize]
+
+<h1>Пользователи</h1>
+
+<ListGroup>
+    <ListGroupItem>1: @_name</ListGroupItem>
+    <ListGroupItem>2: @_surname</ListGroupItem>
+    <ListGroupItem>3: @_currentUser.Login</ListGroupItem>
+    <ListGroupItem>4: @_email</ListGroupItem>
+</ListGroup>
+
+
+@code {
+    private UserDto _currentUser = new();
+
+    string _email = "Иванов Иван";
+    private string _roleName = "Жуков Максим";
+    private string _name = "Петров Сергей";
+    private string _surname = "Сидорова Ольга";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var currentUserId = await UserService.GetCurrentUserIdFromJwtToken();
+        _currentUser = await UserService.GetUser(currentUserId);
+    }
+}
