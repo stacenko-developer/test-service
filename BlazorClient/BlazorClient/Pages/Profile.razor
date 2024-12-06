@@ -105,10 +105,17 @@
         return modalRef.Hide();
     }
 
-    private Task SaveModal()
+    private async Task SaveModal()
     {
         _currentUser.Email = _newEmail;
-        return modalRef.Hide();
+        await modalRef.Hide();
+        await UpdateUser();
+    }
+
+    private async Task UpdateUser()
+    {
+        await UserService.UpdateUser(_currentUser);
+        StateHasChanged();
     }
 
     protected override async Task OnInitializedAsync()
