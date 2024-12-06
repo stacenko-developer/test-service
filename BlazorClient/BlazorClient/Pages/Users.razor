@@ -1,4 +1,4 @@
-@page "/users"
+п»ї@page "/users"
 
 @using BlazorClient.Dto
 @using Blazored.LocalStorage
@@ -21,7 +21,7 @@
 
 @attribute [Authorize]
 
-<h1>Пользователи</h1>
+<h1>РџРѕР»СЊР·РѕРІР°С‚РµР»Рё</h1>
 
 <ListGroup>
     <ListGroupItem>1: @_name</ListGroupItem>
@@ -34,10 +34,10 @@
 @code {
     private UserDto _currentUser = new();
 
-    string _email = "Иванов Иван";
-    private string _roleName = "Жуков Максим";
-    private string _name = "Петров Сергей";
-    private string _surname = "Сидорова Ольга";
+    string _email = "РРІР°РЅРѕРІ РРІР°РЅ";
+    private string _roleName = "Р–СѓРєРѕРІ РњР°РєСЃРёРј";
+    private string _name = "РџРµС‚СЂРѕРІ РЎРµСЂРіРµР№";
+    private string _surname = "РЎРёРґРѕСЂРѕРІР° РћР»СЊРіР°";
 
 
     protected override async Task OnInitializedAsync()
