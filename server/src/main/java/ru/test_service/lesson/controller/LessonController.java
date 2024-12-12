@@ -41,7 +41,7 @@ public class LessonController {
                     description = "Возвращает урок по идентификатору"
             )
     })
-    public ResponseEntity<?> getUserById(
+    public ResponseEntity<?> getLessonById(
             @Parameter(description = "Идентификатор урока", required = true) @PathVariable UUID id
     ) {
         return new ResponseEntity<>(lessonServiceBean.findById(id), HttpStatus.OK);

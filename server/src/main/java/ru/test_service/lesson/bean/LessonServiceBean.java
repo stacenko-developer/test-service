@@ -72,8 +72,4 @@ public class LessonServiceBean {
     public void deleteLesson(UUID id) {
         lessonServiceDao.deleteById(id);
     }
-
-
-
-
 }

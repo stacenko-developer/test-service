@@ -16,7 +16,7 @@ public class RoleDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 570134845986694905L;
 
-    @Schema(description = "Логин пользователя", example = "216c1bd3-a698-4b98-a91c-256090a695ca")
+    @Schema(description = "Идентификатор роли", example = "216c1bd3-a698-4b98-a91c-256090a695ca")
     private UUID id;
 
     @Schema(description = "Название роли", example = "Администратор")

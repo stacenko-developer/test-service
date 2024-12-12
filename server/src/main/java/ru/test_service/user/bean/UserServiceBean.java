@@ -7,6 +7,9 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.test_service.lesson.dao.entity.Lesson;
+import ru.test_service.lesson.dao.service.LessonServiceDao;
+import ru.test_service.lesson.dto.LessonDto;
 import ru.test_service.mail.dto.EmailDto;
 import ru.test_service.mail.service.EmailService;
 import ru.test_service.user.configuration.RestoreUserConfiguration;
@@ -14,7 +17,6 @@ import ru.test_service.user.dao.entity.Role;
 import ru.test_service.user.dao.entity.User;
 import ru.test_service.user.dao.service.RoleServiceDao;
 import ru.test_service.user.dao.service.UserServiceDao;
-import ru.test_service.user.dto.CreateUserDto;
 import ru.test_service.user.dto.RestoreUserDto;
 import ru.test_service.user.dto.SecuredUserDto;
 import ru.test_service.user.dto.UserDto;
@@ -23,6 +25,7 @@ import ru.test_service.user.exception.UserLoginHasAlreadyExistException;
 import ru.test_service.user.exception.UserLoginNotSpecifiedException;
 import ru.test_service.user.exception.UserPasswordNotSpecifiedException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,6 +35,7 @@ public class UserServiceBean {
 
     private final UserServiceDao userServiceDao;
     private final RoleServiceDao roleServiceDao;
+    private final LessonServiceDao lessonServiceDao;
     private final PasswordServiceBean passwordServiceBean;
     private final EmailService emailService;
     private final ModelMapper mapper;
@@ -81,7 +85,7 @@ public class UserServiceBean {
     }
 
     @Transactional
-    public UserDto createUser(CreateUserDto user) {
+    public UserDto createUser(SecuredUserDto user) {
         if (StringUtils.isBlank(user.getLogin())) {
             throw new UserLoginNotSpecifiedException();
         }
@@ -103,6 +107,14 @@ public class UserServiceBean {
         if (role != null) {
             entity.setRoles(List.of(role));
         }
+
+        List<Lesson> lessons = new ArrayList<>();
+
+        for (LessonDto lessonDto : user.getLessons()) {
+            lessons.add(lessonServiceDao.findById(lessonDto.getId()));
+        }
+
+        entity.setLessons(lessons);
 
         UserDto result = mapper
                 .map(userServiceDao.save(entity),
@@ -131,6 +143,14 @@ public class UserServiceBean {
         }
 
         entity.setLogin(user.getLogin());
+
+        List<Lesson> lessons = new ArrayList<>();
+
+        for (LessonDto lessonDto : user.getLessons()) {
+            lessons.add(lessonServiceDao.findById(lessonDto.getId()));
+        }
+
+        entity.setLessons(lessons);
 
         UserDto result = mapper
                 .map(userServiceDao.save(entity),

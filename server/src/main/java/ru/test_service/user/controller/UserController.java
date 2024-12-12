@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.test_service.user.bean.UserServiceBean;
-import ru.test_service.user.dto.CreateUserDto;
 import ru.test_service.user.dto.SecuredUserDto;
 import ru.test_service.user.dto.UserDto;
 
@@ -64,7 +63,7 @@ public class UserController {
             )
     })
     public ResponseEntity<?> createUser(
-            @Parameter(description = "Объект пользователя") @RequestBody CreateUserDto user
+            @Parameter(description = "Объект пользователя") @RequestBody SecuredUserDto user
     ) {
         return new ResponseEntity<>(userServiceBean.createUser(user), HttpStatus.OK);
     }
